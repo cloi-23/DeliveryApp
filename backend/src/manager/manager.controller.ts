@@ -1,3 +1,4 @@
+import { LoginManagerDto } from './dto/login-manager.dto';
 import { 
   Body, 
   Controller, 
@@ -39,8 +40,7 @@ export class ManagerController {
   }
 
   @Post('/login')
-  async validateUser(@Body('username') user: string, 
-    @Body('password') password: string) {
-    return this.managerService.validateUser(user, password)
+  async validateUser(@Body() login: LoginManagerDto) {
+    return this.managerService.validateUser(login)
   }
 }

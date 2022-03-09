@@ -1,3 +1,4 @@
+import { LoginCustomerDto } from './dto/login-cutomer.dto';
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Customer } from './entities/customer.entity';
@@ -16,10 +17,7 @@ export class CustomerService {
     }
   
     async findOne(id: string) {
-      const customer = await this.customerModel.findOne({ _id: id });
-      if (!customer) {
-        throw new NotFoundException(`Customer #${id} not found`);
-      }
+      const customer = await this.customerModel.findOne({ _id: id }).exec();
       return customer 
     }
     
@@ -41,12 +39,12 @@ export class CustomerService {
       return customer.save();
     }
   
-    async validateUser(username: string, pass: string): Promise<any> {
+    async validateUser(login:LoginCustomerDto): Promise<any> {
       try {
-        const user = await this.customerModel.findOne({ username: username }).exec();
-        const isMatch = await bcrypt.compare(pass, user.password)
+        const user = await this.customerModel.findOne({ username: login.username }).exec();
+        const isMatch = await bcrypt.compare(login.password, user.password)
         if (isMatch) {
-          const { password, ...result } = user;      
+         // const { password, ...result } = user;      
           return 'login successful';
         }
         throw new HttpException('',HttpStatus.UNAUTHORIZED)
