@@ -16,7 +16,10 @@ export class CustomerService {
     }
   
     async findOne(id: string) {
-      const customer = await this.customerModel.findOne({ _id: id }).exec();
+      const customer = await this.customerModel.findOne({ _id: id });
+      if (!customer) {
+        throw new NotFoundException(`Customer #${id} not found`);
+      }
       return customer 
     }
     
