@@ -15,11 +15,16 @@ export class DriverService {
     }
   
     async findOne(id: string) {
-      const driver = await this.driverModel.findOne({ _id: id }).exec();
-      if (!driver) {
+      try {
+        const driver = await this.driverModel.findOne({ _id: id }).exec();
+        if (!driver) {
+          throw new NotFoundException(`Driver #${id} not found`);
+        }
+        return driver;
+      } catch (error) {
         throw new NotFoundException(`Driver #${id} not found`);
       }
-      return driver;
+     
     }
   
     create(createDriverDto: CreateDriverDto) {

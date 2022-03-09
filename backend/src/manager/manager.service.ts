@@ -18,11 +18,16 @@ export class ManagerService {
     }
   
     async findOne(id: string) {
-      const manager = await this.managerModel.findOne({ _id: id }).exec();
-      if (!manager) {
+      try {
+        const manager = await this.managerModel.findOne({ _id: id }).exec();
+        if (!manager) {
+          throw new NotFoundException(`Manager #${id} not found`);
+        }
+        return manager;
+      } catch (error) {
         throw new NotFoundException(`Manager #${id} not found`);
       }
-      return manager;
+     
     }
   
     async create(createManagerDto: CreateManagerDto) {

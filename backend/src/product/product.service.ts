@@ -17,11 +17,16 @@ export class ProductService {
   }
 
   async findOne(id: string) {
-    const product = await this.productModel.findOne({ _id: id }).exec();
-    if (!product) {
+    try{
+        const product = await this.productModel.findOne({ _id: id }).exec();
+        if (!product) {
+          throw new NotFoundException(`Product #${id} not found`);
+        }
+        return product;
+    }
+    catch(err){
       throw new NotFoundException(`Product #${id} not found`);
     }
-    return product;
   }
 
   async create(name: string, createProductDto: CreateProductDto) {

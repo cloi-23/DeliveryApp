@@ -14,11 +14,16 @@ export class PurchaseService {
   }
 
   async findOne(id: string) {
-    const purchase = await this.purchaseModel.findOne({ _id: id }).exec();
-    if (!purchase) {
+    try {
+      const purchase = await this.purchaseModel.findOne({ _id: id }).exec();
+      if (!purchase) {
+        throw new NotFoundException(`Purchase #${id} not found`);
+      }
+    return purchase;
+    } catch (error) {
       throw new NotFoundException(`Purchase #${id} not found`);
     }
-    return purchase;
+    
   }
 
   create(creatPurchaseDto: CreatePurchaseDto) {

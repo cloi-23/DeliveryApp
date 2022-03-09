@@ -16,11 +16,16 @@ export class OrderService {
     }
   
     async findOne(id: string) {
-      const order = await this.orderModel.findOne({ _id: id }).exec();
-      if (!order) {
+      try {
+        const order = await this.orderModel.findOne({ _id: id }).exec();
+        if (!order) {
+          throw new NotFoundException(`Order #${id} not found`);
+        }
+        return order;
+      } catch (error) {
         throw new NotFoundException(`Order #${id} not found`);
       }
-      return order;
+     
     }
   
     create(createOrderDto: CreateOrderDto) {

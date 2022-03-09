@@ -17,11 +17,16 @@ export class CustomerService {
     }
   
     async findOne(id: string) {
-      const customer = await this.customerModel.findOne({ _id: id }).exec();
-      if (!customer) {
-        throw new NotFoundException(`Customer #${id} not found`);
+      try{
+          const customer = await this.customerModel.findOne({ _id: id }).exec();
+            if (!customer) {
+              throw new NotFoundException(`Customer #${id} not found`);
+            }
+            return customer 
       }
-      return customer 
+       catch(err){
+           throw new NotFoundException(`Customer #${id} not found`);
+      }
     }
     
     async create(createCustomerDto: CreateCustomerDto) {

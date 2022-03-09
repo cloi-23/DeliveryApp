@@ -16,11 +16,16 @@ export class SalesService {
     }
   
     async findOne(id: string) {
-      const sales = await this.salesModel.findOne({ _id: id }).exec();
-      if (!sales) {
+      try {
+        const sales = await this.salesModel.findOne({ _id: id }).exec();
+        if (!sales) {
+          throw new NotFoundException(`Sale #${id} not found`);
+        }
+        return sales;
+      } catch (error) {
         throw new NotFoundException(`Sale #${id} not found`);
       }
-      return sales;
+     
     }
   
     create(createSalesDto: CreateSalesDto) {
