@@ -4,11 +4,13 @@ import { Model } from 'mongoose'
 import { Sales } from './entities/sales.entity';
 import { CreateSalesDto } from './dto/create-sales-dto';
 import { UpdateSalesDto } from './dto/update-sales-dto';
+import { Order } from 'src/order/entities/order.entity';
 
 @Injectable()
 export class SalesService {
   constructor(
-    @InjectModel(Sales.name) private readonly salesModel: Model<Sales>
+    @InjectModel(Sales.name) private readonly salesModel: Model<Sales>, 
+    @InjectModel(Order.name) private readonly orderModel: Model<Order>
     ) {}
 
     findAll() {
@@ -25,11 +27,14 @@ export class SalesService {
       } catch (error) {
         throw new NotFoundException(`Sale #${id} not found`);
       }
-     
     }
   
-    create(createSalesDto: CreateSalesDto) {
-      const sales = new this.salesModel(createSalesDto);
+    async create(createSalesDto: CreateSalesDto) {
+      const order = await this.orderModel.findOne({ _id: createSalesDto.orderId }).exec();
+      const data = {
+        orderId: order['_id']
+      }
+      const sales = new this.salesModel(data);
       return sales.save();
     }
   
