@@ -4,17 +4,22 @@ import { Document } from "mongoose";
 @Schema()
 export class Delivery  extends Document {
   @Prop()
+  name: string
+  
+  @Prop()
   driverId: string
   
   @Prop()
   orderId: string;
 
-  @Prop({ default: new Date() })
+  @Prop()
   orderDate: Date;
 
-  @Prop({ default: 'pending' })
+  @Prop({ default: 'shipping' })
   status: string
   
+  @Prop()
+  CustomerAddr: string
 }
 
 export const DeliverySchema = SchemaFactory.createForClass(Delivery)

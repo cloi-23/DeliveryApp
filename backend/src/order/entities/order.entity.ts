@@ -6,6 +6,9 @@ export class Order  extends Document {
   
   @Prop()
   userId: string;
+
+  @Prop()
+  name: string
   
   @Prop()
   productId: string;

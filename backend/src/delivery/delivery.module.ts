@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { Customer, CustomerSchema } from 'src/customer/entities/customer.entity';
+import { Order, OrderSchema } from 'src/order/entities/order.entity';
 import { DeliveryController } from './delivery.controller';
 import { DeliveryService } from './delivery.service';
 import { Delivery, DeliverySchema } from './entities/delivery.entity';
@@ -9,6 +11,18 @@ import { Delivery, DeliverySchema } from './entities/delivery.entity';
     {
       name: Delivery.name,
       schema: DeliverySchema
+    }
+  ]),
+  MongooseModule.forFeature([
+    {
+      name: Order.name,
+      schema: OrderSchema
+    }
+  ]),
+  MongooseModule.forFeature([
+    {
+      name: Customer.name,
+      schema: CustomerSchema
     }
   ])],
   controllers: [DeliveryController],

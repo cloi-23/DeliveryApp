@@ -5,6 +5,7 @@ import {
   Param, 
   Patch, 
   Post } from '@nestjs/common';
+import bodyParser from 'body-parser';
 import { CreateOrderDto } from './dto/create-delivery.dto';
 import { UpdateOrderDto } from './dto/update-delivery.dto';
 import { OrderService } from './order.service';
@@ -23,13 +24,11 @@ export class OrderController {
     return this.orderService.findOne(id)
   }
 
-  @Post(':id')
-  create(@Param('id') id: string, @Body() createOrderDto: CreateOrderDto) {
-    const data = {
-      userId:id,
-      ...createOrderDto
-    }
-    return this.orderService.create(data);
+  @Post()
+  create(@Body() createOrderDto: CreateOrderDto,
+    @Body('productId') productId: string,
+    @Body('userId') userId: string) {
+    return this.orderService.create(productId, userId, createOrderDto);
   }
 
   @Patch(':id')
