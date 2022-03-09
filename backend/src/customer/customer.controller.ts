@@ -5,7 +5,6 @@ import {
   Param, 
   Patch, 
   Post } from '@nestjs/common';
-import { setTheUsername } from 'whatwg-url';
 import { CustomerService } from './customer.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
@@ -25,8 +24,8 @@ export class CustomerController {
   }
 
   @Post()
-  create(@Body('username') username: string, @Body() createCustomerDto: CreateCustomerDto) {
-    return this.customerService.create(username, createCustomerDto);
+  create(@Body() createCustomerDto: CreateCustomerDto) {
+    return this.customerService.create(createCustomerDto);
   }
 
   @Patch(':id')

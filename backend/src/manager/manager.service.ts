@@ -20,18 +20,16 @@ export class ManagerService {
       return manager;
     }
   
-    async create(username: string, createManagerDto: CreateManagerDto) {
+    async create(createManagerDto: CreateManagerDto) {
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hash(createManagerDto.password, salt)
-      const user = await this.managerModel.findOne({ username: username }).exec();
+      const user = await this.managerModel.findOne({ username: createManagerDto.username }).exec();
 
       if (user) {
         throw new HttpException('username already exist!', HttpStatus.CONFLICT)
       }
       const data = {
-        name: createManagerDto.name,
-        contact: createManagerDto.contact,
-        username: username,
+        ...createManagerDto,
         password: hashPassword
       }
       const customer = new this.managerModel(data);
@@ -44,9 +42,9 @@ export class ManagerService {
         const user = await this.managerModel.findOne({ username: username }).exec();
         const isMatch = await bcrypt.compare(pass, user.password)
         if  (isMatch) {
-          const { password, ...result } = user;      
-          return result;
+          return user;
         }
+        throw console.error();
       } catch {
          throw new HttpException('username or password not exist!', HttpStatus.UNAUTHORIZED)
       }

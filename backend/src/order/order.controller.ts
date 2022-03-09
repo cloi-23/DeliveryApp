@@ -29,7 +29,6 @@ export class OrderController {
       userId:id,
       ...createOrderDto
     }
-    console.log(data);
     return this.orderService.create(data);
   }
 

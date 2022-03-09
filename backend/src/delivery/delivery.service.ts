@@ -7,7 +7,7 @@ import { UpdateDeliveryDto } from './dto/update-delivery.dto';
 
 @Injectable()
 export class DeliveryService {
-  constructor(@InjectModel(Delivery.name) private readonly deliveryMode: Model < Delivery> ) {}
+  constructor(@InjectModel(Delivery.name) private readonly deliveryMode: Model <Delivery> ) {}
 
   findAll() {
     return this.deliveryMode.find()

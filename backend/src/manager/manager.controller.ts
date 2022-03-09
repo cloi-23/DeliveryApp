@@ -24,8 +24,8 @@ export class ManagerController {
   }
 
   @Post()
-  create(@Body('username') username: string, @Body() createManagerDto: CreateManagerDto) {
-    return this.managerService.create(username, createManagerDto);
+  create(@Body() createManagerDto: CreateManagerDto) {
+    return this.managerService.create(createManagerDto);
   }
 
   @Patch(':id')
