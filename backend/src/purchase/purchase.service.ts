@@ -16,7 +16,7 @@ export class PurchaseService {
   async findOne(id: string) {
     const purchase = await this.purchaseModel.findOne({ _id: id }).exec();
     if (!purchase) {
-      throw new NotFoundException(`Customer #${id} not found`);
+      throw new NotFoundException(`Purchase #${id} not found`);
     }
     return purchase;
   }

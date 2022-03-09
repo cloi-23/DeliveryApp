@@ -17,7 +17,7 @@ export class DriverService {
     async findOne(id: string) {
       const driver = await this.driverModel.findOne({ _id: id }).exec();
       if (!driver) {
-        throw new NotFoundException(`Customer #${id} not found`);
+        throw new NotFoundException(`Driver #${id} not found`);
       }
       return driver;
     }

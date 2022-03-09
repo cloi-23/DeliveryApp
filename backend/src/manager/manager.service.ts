@@ -20,7 +20,7 @@ export class ManagerService {
     async findOne(id: string) {
       const manager = await this.managerModel.findOne({ _id: id }).exec();
       if (!manager) {
-        throw new NotFoundException(`Customer #${id} not found`);
+        throw new NotFoundException(`Manager #${id} not found`);
       }
       return manager;
     }

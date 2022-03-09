@@ -16,7 +16,7 @@ export class DeliveryService {
   async findOne(id: string) {
     const delivery = await this.deliveryMode.findOne({ _id: id }).exec();
     if (!delivery) {
-      throw new NotFoundException(`Customer #${id} not found`);
+      throw new NotFoundException(`Delivery #${id} not found`);
     }
     return delivery;
   }
