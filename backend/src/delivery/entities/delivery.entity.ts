@@ -15,11 +15,14 @@ export class Delivery  extends Document {
   @Prop()
   orderDate: Date;
 
-  @Prop({ default: 'shipping' })
+  @Prop({ default: 'to ship' })
   status: string
   
   @Prop()
   CustomerAddr: string
+
+  @Prop()
+  total:number
 }
 
 export const DeliverySchema = SchemaFactory.createForClass(Delivery)

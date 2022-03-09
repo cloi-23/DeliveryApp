@@ -25,13 +25,13 @@ export class DeliveryController {
     }
   
     @Post()
-    create(@Body() createDeliveryDto: CreateDeliveryDto) {
-      return this.deliveryService.create(createDeliveryDto);
+    create(@Body() createDelivery: CreateDeliveryDto) {
+      return this.deliveryService.create(createDelivery);
     }
   
     @Patch(':id')
-    update(@Param('id') id: string, @Body() updateDeliveryDto: UpdateDeliveryDto) {
-      return this.deliveryService.update(id, updateDeliveryDto);
+    update(@Param('id') id: string, @Body() updateDelivery: UpdateDeliveryDto) {
+      return this.deliveryService.update(id, updateDelivery);
     }
   
     @Delete(':id')

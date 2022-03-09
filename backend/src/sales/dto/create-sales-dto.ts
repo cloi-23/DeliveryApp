@@ -4,6 +4,4 @@ export class CreateSalesDto {
   @IsString()
   orderId: string
   
-  @IsString()
-  date: Date;
 }
