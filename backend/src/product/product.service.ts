@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common'; 
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common'; 
 import { InjectModel } from '@nestjs/mongoose';
 import { Product } from './entities/product.entity';
 import { Model } from 'mongoose'
@@ -18,6 +18,9 @@ export class ProductService {
 
   async findOne(id: string) {
     const product = await this.productModel.findOne({ _id: id }).exec();
+    if (!product) {
+      throw new NotFoundException(`Customer #${id} not found`);
+    }
     return product;
   }
 

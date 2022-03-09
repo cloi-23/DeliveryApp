@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose'
 import { CreateDriverDto } from './dto/create-driver.dto';
@@ -16,6 +16,9 @@ export class DriverService {
   
     async findOne(id: string) {
       const driver = await this.driverModel.findOne({ _id: id }).exec();
+      if (!driver) {
+        throw new NotFoundException(`Customer #${id} not found`);
+      }
       return driver;
     }
   

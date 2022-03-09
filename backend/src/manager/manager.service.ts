@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose'
 import { Manager } from './entities/manager.entity';
@@ -17,6 +17,9 @@ export class ManagerService {
   
     async findOne(id: string) {
       const manager = await this.managerModel.findOne({ _id: id }).exec();
+      if (!manager) {
+        throw new NotFoundException(`Customer #${id} not found`);
+      }
       return manager;
     }
   
