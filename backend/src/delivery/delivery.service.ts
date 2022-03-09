@@ -7,15 +7,15 @@ import { UpdateDeliveryDto } from './dto/update-delivery.dto';
 
 @Injectable()
 export class DeliveryService {
-  constructor(@InjectModel(Delivery.name) private readonly deliveryMode: Model <Delivery> ) {}
+  constructor(@InjectModel(Delivery.name) private readonly deliveryModel: Model <Delivery> ) {}
 
   findAll() {
-    return this.deliveryMode.find()
+    return this.deliveryModel.find()
   }
 
   async findOne(id: string) {
     try {
-      const delivery = await this.deliveryMode.findOne({ _id: id }).exec();
+      const delivery = await this.deliveryModel.findOne({ _id: id }).exec();
       if (!delivery) {
         throw new NotFoundException(`Delivery #${id} not found`);
       }
@@ -27,12 +27,12 @@ export class DeliveryService {
   }
 
   create(createDeliveryDto: CreateDeliveryDto) {
-    const delivery = new this.deliveryMode(createDeliveryDto);
+    const delivery = new this.deliveryModel(createDeliveryDto);
     return delivery.save();
   }
 
   async update(id: string, updateDeliveryDto: UpdateDeliveryDto) {
-    await this.deliveryMode
+    await this.deliveryModel
     .findOneAndUpdate({ _id: id }, { $set: updateDeliveryDto }, { new: true })
     .exec();
   }

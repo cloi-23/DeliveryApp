@@ -17,7 +17,7 @@ describe('AppController (e2e)', () => {
     username:'test-26',
     password:'test123',
   };
-  let registerCustomer = {
+  let registeredCustomer = {
     id:"id",
     username:"",
     password:""
@@ -44,21 +44,37 @@ describe('AppController (e2e)', () => {
   });
 
 
-  it('Create Customer [POST /]', ()=>{
-    return request(app.getHttpServer())
-    .post('/customer')
-    .send(customer as CreateCustomerDto)
-    .expect(HttpStatus.CREATED)
-    .then(({body}) => {
-      const expectedCustomer = expect.objectContaining({...customer,password:expect.anything()})
-      registerCustomer={
-        id:body._id,
-        username:body.username,
-        password:body.password
-      }
-      expect(body).toEqual(expectedCustomer);
+  
+  describe('Create Customer [POST /]',()=>{
+    it('should return new customer object', ()=>{
+      return request(app.getHttpServer())
+      .post('/customer')
+      .send(customer as CreateCustomerDto)
+      .expect(HttpStatus.CREATED)
+      .then(({body}) => {
+        const expectedCustomer = expect.objectContaining({...customer,password:expect.anything()})
+        registeredCustomer={
+          id:body._id,
+          username:body.username,
+          password:body.password
+        }
+        expect(body).toEqual(expectedCustomer);
+      });
     });
-  });
+
+    it('should return CONFLICT and send ERROR_MESSAGE, when username already exits ', ()=>{
+      return request(app.getHttpServer())
+      .post('/customer')
+      .send(customer as CreateCustomerDto)
+      .expect(HttpStatus.CONFLICT)
+      .then(({body}) => {
+        const expectErrorMessage =  'username already exist!'
+        expect(body.message).toEqual(expectErrorMessage)
+        
+      });
+    });
+
+  })
 
 // describe('Validate Customer',()=>{
 // const validCustomer={
@@ -78,7 +94,7 @@ describe('AppController (e2e)', () => {
   //   .post('/customer/login')
   //   .send(validCustomer as LoginCustomerDto)
   //   .then(() => {
-  //     bcrypt.compare(validCustomer.password, registerCustomer.password)
+  //     bcrypt.compare(validCustomer.password, registeredCustomer.password)
   //     .then(isMatch=>{
   //     expect(isMatch).toEqual(true);
   //     })
@@ -94,7 +110,7 @@ describe('AppController (e2e)', () => {
   //     console.log(body);
       
   //     const errorPassword ="error"
-  //     bcrypt.compare(errorPassword, registerCustomer.password)
+  //     bcrypt.compare(errorPassword, registeredCustomer.password)
   //     .then(isMatch=>{
   //     expect(isMatch).toEqual(false);
 
@@ -131,17 +147,28 @@ describe('AppController (e2e)', () => {
   });
 
 
-  it('FindOne Customer [GET /:id]', ()=>{
-    return request(app.getHttpServer())
-    .get(`/customer/${registerCustomer.id}`)
-    .send(customer as CreateCustomerDto)
-    .expect(HttpStatus.OK)
-    .then(({body}) => {
-      const expectedCustomer = expect.objectContaining({...customer,password:expect.anything()})
-     expect(body).toEqual(expectedCustomer);
-    });
-  });
-
+  describe('FindOne Customer [GET /:id]',()=>{
+    it('should return an custmer object', ()=>{
+        return request(app.getHttpServer())
+        .get(`/customer/${registeredCustomer.id}`)
+        .send(customer as CreateCustomerDto)
+        .expect(HttpStatus.OK)
+        .then(({body}) => {
+            const expectedCustomer = expect.objectContaining({...customer,password:expect.anything()})
+            expect(body).toEqual(expectedCustomer);
+          });
+      });
+      it('should return NOT_FOUND and ERROR_MESSAGE, when prodId is not exist', ()=>{
+        const errorCustomerId = "ERROR_ID"
+        return request(app.getHttpServer())
+        .get(`/customer/${errorCustomerId}`)
+        .expect(HttpStatus.NOT_FOUND)
+        .then(({body}) => {
+            const expectedErrorMessage =  `Customer #${errorCustomerId} not found`
+            expect(body.message).toEqual(expectedErrorMessage);
+        });
+      });
+  })
 
   it('Update Customer [Patch /:id]', ()=>{
     const updateCustomer:UpdateCustomerDto={
@@ -152,11 +179,11 @@ describe('AppController (e2e)', () => {
   
     }
     return request(app.getHttpServer())
-    .patch(`/customer/${registerCustomer.id}`)
+    .patch(`/customer/${registeredCustomer.id}`)
     .send(updateCustomer as UpdateCustomerDto)
     .then(() => {
      return request(app.getHttpServer())
-          .get(`/customer/${registerCustomer.id}`)
+          .get(`/customer/${registeredCustomer.id}`)
           .then(({ body }) => {
             expect(body.name).toEqual(updateCustomer.name);
           });
@@ -166,12 +193,16 @@ describe('AppController (e2e)', () => {
 
   it('Delete one Customer [DELETE /:id]', () => {
     return request(app.getHttpServer())
-      .delete(`/customer/${registerCustomer.id}`)
+      .delete(`/customer/${registeredCustomer.id}`)
       .expect(HttpStatus.OK)
       .then(() => {
         return request(app.getHttpServer())
-          .get(`/customer/${registerCustomer.id}`)
-          .expect(HttpStatus.NOT_FOUND);
+          .get(`/customer/${registeredCustomer.id}`)
+          .expect(HttpStatus.NOT_FOUND)
+          .then(({body}) => {
+            const expectedErrorMessage =  `Customer #${registeredCustomer.id} not found`
+            expect(body.message).toEqual(expectedErrorMessage);
+        });
       })
   });
 
