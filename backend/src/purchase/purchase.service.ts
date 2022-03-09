@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Purhcase } from './entities/purchase.entities';
 import { Model } from 'mongoose'
@@ -14,8 +14,16 @@ export class PurchaseService {
   }
 
   async findOne(id: string) {
-    const purchase = await this.purchaseModel.findOne({ _id: id }).exec();
+    try {
+      const purchase = await this.purchaseModel.findOne({ _id: id }).exec();
+      if (!purchase) {
+        throw new NotFoundException(`Purchase #${id} not found`);
+      }
     return purchase;
+    } catch (error) {
+      throw new NotFoundException(`Purchase #${id} not found`);
+    }
+    
   }
 
   create(creatPurchaseDto: CreatePurchaseDto) {

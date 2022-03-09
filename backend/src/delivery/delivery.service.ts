@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Delivery } from './entities/delivery.entity';
 import { Model } from 'mongoose'
@@ -18,8 +18,17 @@ export class DeliveryService {
   }
 
   async findOne(id: string) {
-    const delivery = await this.deliveryModel.findOne({ _id: id }).exec();
-    return delivery;
+
+    try {
+      const delivery = await this.deliveryModel.findOne({ _id: id }).exec();
+      if (!delivery) {
+        throw new NotFoundException(`Delivery #${id} not found`);
+      }
+      return delivery;
+    } catch (error) {
+      throw new NotFoundException(`Delivery #${id} not found`);
+    }
+
   }
 
   create(createDeliveryDto: CreateDeliveryDto) {

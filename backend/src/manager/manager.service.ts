@@ -1,9 +1,11 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose'
 import { Manager } from './entities/manager.entity';
 import { CreateManagerDto } from './dto/create-manager.dto';
 import { UpdateManagerDto } from './dto/update-manager.dto';
+import { LoginManagerDto } from './dto/login-manager.dto';
+
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -16,8 +18,16 @@ export class ManagerService {
     }
   
     async findOne(id: string) {
-      const manager = await this.managerModel.findOne({ _id: id }).exec();
-      return manager;
+      try {
+        const manager = await this.managerModel.findOne({ _id: id }).exec();
+        if (!manager) {
+          throw new NotFoundException(`Manager #${id} not found`);
+        }
+        return manager;
+      } catch (error) {
+        throw new NotFoundException(`Manager #${id} not found`);
+      }
+     
     }
   
     async create(createManagerDto: CreateManagerDto) {
@@ -37,14 +47,14 @@ export class ManagerService {
       return customer.save()
     }
   
-    async validateUser(username: string, pass: string): Promise<any> {
+    async validateUser(login:LoginManagerDto): Promise<any> {
       try {
-        const user = await this.managerModel.findOne({ username: username }).exec();
-        const isMatch = await bcrypt.compare(pass, user.password)
+        const user = await this.managerModel.findOne({ username: login.username }).exec();
+        const isMatch = await bcrypt.compare(login.password, user.password)
         if  (isMatch) {
-          return user;
+          return 'login successful';
         }
-        throw console.error();
+        throw new HttpException('',HttpStatus.UNAUTHORIZED)
       } catch {
          throw new HttpException('username or password not exist!', HttpStatus.UNAUTHORIZED)
       }

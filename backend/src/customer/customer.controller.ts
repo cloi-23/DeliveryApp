@@ -39,9 +39,11 @@ export class CustomerController {
   }
 
   @Post('/login')
-  async validateUser(@Body('username') user: string, 
-    @Body('password') password: string) {
-    return this.customerService.validateUser(user, password)
+  async validateUser(@Body() login) {
+    return this.customerService.validateUser(login)
   }
+
+  
+  
 
 }

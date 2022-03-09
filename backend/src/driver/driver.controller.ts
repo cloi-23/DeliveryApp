@@ -1,3 +1,4 @@
+import { LoginDriveDto } from './dto/login-driver.dto';
 import { 
   Body, 
   Controller, 
@@ -36,5 +37,9 @@ export class DriverController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.driverService.remove(id);  
+  }
+  @Post('/login')
+  async validateUser(@Body() login:LoginDriveDto ) {
+    return this.driverService.validateUser(login);  
   }
 }
