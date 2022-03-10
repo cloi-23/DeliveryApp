@@ -7,16 +7,19 @@
  <form @submit.prevent="add">
  <div class="mb-3">
   <label for="formFile" class="form-label">Default file input example</label>
-  <input class="form-control" type="file" id="formFile" name="file"  ref="fileData" @change="imgUpload">
+  <input class="form-control" type="file" id="formFile" name="file"  ref="fileData" @change="imgUpload" required>
 </div>
-{{name}}{{establishment}}
 <div class="mb-3">
 <label for="exampleFormControlInput1" class="form-label">Product Name:</label>
-  <input type="text" class="form-control" v-model="name" placeholder="Enter Product">
+  <input type="text" class="form-control" v-model="name" placeholder="Enter Product" required>
 </div>
 <div class="mb-3">
  <label for="exampleFormControlInput1" class="form-label">Establishment </label>
-  <input type="text" class="form-control"   v-model="establishment" placeholder="Enter Establishment">
+  <input type="text" class="form-control"   v-model="establishment" placeholder="Enter Establishment" required>
+</div>
+<div class="mb-3">
+ <label for="exampleFormControlInput1" class="form-label">Unit Price </label>
+  <input type="number" class="form-control"   v-model="price" placeholder="Enter Amount" required>
 </div>
   <div class="col-12">
     <button type="submit" class="btn btn-primary">Add</button>
@@ -28,11 +31,11 @@
 
 <script  setup>
 import axios from 'axios'
- definePageMeta({layout:'admin'})
 const name = ref(null)
 const establishment = ref(null)
 const fileData = ref(null)
 const image = ref(null)
+const price = ref(null)
 const router  =  useRouter()
 
  const imgUpload = ()=>{
@@ -48,15 +51,19 @@ const router  =  useRouter()
          const product ={
          name: name.value,
          establishment:establishment.value,
-          image: `http://localhost:3000/upload/${image.value}`
+          image: `http://localhost:3000/upload/${image.value}`,
+          price: price.value
      }
+     console.log(product);
      const res = await axios.post(`http://localhost:3000/product`,product)
       console.log(res.status); 
-      name.value=null
-      establishment.value=null
+      name.value = null
+      establishment.value = null
+      price.value = null
      router.push({name:'product'})
    } catch (error) {
        console.log(error);
+       
    }
  }
 
