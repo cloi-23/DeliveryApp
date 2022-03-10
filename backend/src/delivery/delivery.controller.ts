@@ -19,9 +19,14 @@ export class DeliveryController {
       return this.deliveryService.findAll();
     }
   
-    @Get(':id')
+    @Get('get/:id')
     findOne(@Param('id') id: string) {
       return this.deliveryService.findOne(id)
+    }
+
+    @Get('info')
+    findEachData() {
+      return this.deliveryService.forDeliver()
     }
   
     @Post()

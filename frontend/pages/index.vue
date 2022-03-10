@@ -31,7 +31,6 @@ try {
     username.value = ''
     password.value = ''
     if (res.status !== 201) {}
-    console.log(router.push({name:'dashboard'}));
     
   } catch (e) {
     response.value = 'username or password is not correct'

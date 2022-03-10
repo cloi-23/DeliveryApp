@@ -32,12 +32,17 @@ export class DeliveryService {
     }
   }
 
-  async findEachData() {
+  async forDeliver() {
     const customer = await this.customerModel.find().exec();
     const driver = await this.driverModel.find().exec();
     const order = await this.orderModel.find().exec();
+    const data = {
+      customer: customer,
+      driver: driver,
+      order: order
+    }
+    return data 
   }
-
   async create(createDelivery: CreateDeliveryDto) {
     const customer = await this.customerModel.findOne({ _id: createDelivery.userId }).exec();
     const driver = await this.driverModel.findOne({ _id: createDelivery.driverId }).exec();
