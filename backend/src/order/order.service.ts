@@ -19,6 +19,12 @@ export class OrderService {
     findAll() {
       return this.orderModel.find()
     }
+
+    async findAllOrderByCust(id: string) {
+      const user = await this.orderModel.find({ userId: id }).exec()
+      return (user.filter( x => x.status == 'packaging')) 
+      
+    }
   
     async findOne(id: string) {
       try {
@@ -39,7 +45,8 @@ export class OrderService {
       const data = {
         ...createOrderDto,
         price: product.price,
-        name:customer.name
+        customerName:customer.name,
+        productName: product.name
       }
       const order = new this.orderModel(data);
       return order.save();
@@ -50,8 +57,11 @@ export class OrderService {
       .findOneAndUpdate({ _id: id }, { $set: updateOrderDto }, { new: true })
       .exec();
     }
-  
-    async remove(id: string) {
+
+     async RemoveAllOrderByCust(id: string) {
+      return this.orderModel.deleteMany({ userId: id })    }
+
+      async remove(id: string) {
       const product = await this.findOne(id)
       return product.remove();
     }

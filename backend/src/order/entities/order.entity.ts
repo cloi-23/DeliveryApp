@@ -8,10 +8,13 @@ export class Order  extends Document {
   userId: string;
 
   @Prop()
-  name: string
+  customerName: string
   
   @Prop()
   productId: string;
+
+  @Prop()
+  productName: string;
 
   @Prop({ default: 'packaging'})
   status: string;
@@ -21,6 +24,13 @@ export class Order  extends Document {
 
   @Prop()
   quantity: number
+
+<<<<<<< HEAD
+  @Prop({default : new Date() })
+=======
+  @Prop({default : new Date().toLocaleDateString() })
+>>>>>>> e4623418d3a38cfe6db2614d2ade30e1fce0fe29
+  date: Date
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order)
