@@ -22,7 +22,6 @@
 
 <script  setup>
 import axios from 'axios'
- definePageMeta({layout:'admin'})
 const {data: productList} = await axios.get(`http://localhost:3000/product`)
 
 </script>

@@ -3,6 +3,12 @@
   <button @click="$router.go(-1)">Back</button>
   <div>
   <h2>Order by customer</h2>
+  <div>
+  <button>send</button> to
+  <select >
+    <option v-for="driver in drivers" value="driver.name">{{driver.name}}</option>
+  </select>
+  </div>
   <table>
   <tr>
     <th>Product Name </th>
@@ -21,7 +27,7 @@
 </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import { ref } from 'vue'
 import axios from 'axios'
 
@@ -49,7 +55,4 @@ const getDrivers = async() => {
 }
 getDrivers()
 
-const removeOrder = async() => {
-    await axios.delete(`http://localhost:3000/order/customer/${route.params.userId}`)
-}
 </script>
