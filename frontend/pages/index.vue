@@ -13,10 +13,12 @@
     {{ response }}
   </div>
 </template>
-<script lang="ts" setup>
+<script setup>
 import { ref } from 'vue'
 import axios from 'axios'
+definePageMeta({layout:'login'})
 const router = useRouter()
+
 
 let username=ref('');
 let password=ref('');

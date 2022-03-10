@@ -6,7 +6,7 @@
  <h1>Product / Add</h1>
  <form @submit.prevent="add">
  <div class="mb-3">
-  <label for="formFile" class="form-label">Default file input example</label>
+  <label for="formFile" class="form-label">Image:</label>
   <input class="form-control" type="file" id="formFile" name="file"  ref="fileData" @change="imgUpload" required>
 </div>
 <div class="mb-3">
@@ -14,11 +14,11 @@
   <input type="text" class="form-control" v-model="name" placeholder="Enter Product" required>
 </div>
 <div class="mb-3">
- <label for="exampleFormControlInput1" class="form-label">Establishment </label>
+ <label for="exampleFormControlInput1" class="form-label">Establishment: </label>
   <input type="text" class="form-control"   v-model="establishment" placeholder="Enter Establishment" required>
 </div>
 <div class="mb-3">
- <label for="exampleFormControlInput1" class="form-label">Unit Price </label>
+ <label for="exampleFormControlInput1" class="form-label">Unit Price: </label>
   <input type="number" class="form-control"   v-model="price" placeholder="Enter Amount" required>
 </div>
   <div class="col-12">
