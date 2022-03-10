@@ -41,7 +41,7 @@ export class DeliveryService {
       name: customer.name,
       driverId: driver['_id'],
       orderId: order['_id'],
-      CustomerAddr: customer.address,
+      customerAddr: customer.address,
       total: order.price * order.quantity 
     }
     const delivery = new this.deliveryModel(data)

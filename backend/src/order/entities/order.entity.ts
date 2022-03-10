@@ -21,6 +21,9 @@ export class Order  extends Document {
 
   @Prop()
   quantity: number
+
+  @Prop({default : new Date().toLocaleDateString() })
+  date: Date
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order)
