@@ -19,7 +19,7 @@ export class Delivery  extends Document {
   status: string
   
   @Prop()
-  CustomerAddr: string
+  customerAddr: string
 
   @Prop()
   total:number
