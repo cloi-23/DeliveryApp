@@ -25,7 +25,11 @@ export class Order  extends Document {
   @Prop()
   quantity: number
 
+<<<<<<< HEAD
   @Prop({default : new Date() })
+=======
+  @Prop({default : new Date().toLocaleDateString() })
+>>>>>>> e4623418d3a38cfe6db2614d2ade30e1fce0fe29
   date: Date
 }
 
