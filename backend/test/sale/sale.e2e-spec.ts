@@ -11,7 +11,7 @@ describe('AppController (e2e)', () => {
   let app: INestApplication;
   const sale = {
     orderId: 'orderId-2',
-    date: "2022-03-09T08:59:20.000Z",
+
  
   };
   let saleId = {
@@ -64,11 +64,10 @@ describe('AppController (e2e)', () => {
     .then(({body}) => {
       const expectedSale = {
         orderId: sale.orderId,
-        date:sale.date
+
       }
       const dataBody={
-        orderId: body[body.length-1].orderId,
-        date:body[body.length-1].date,
+        orderId: body[body.length-1].orderId
       }
       expect(body.length).toBeGreaterThan(0);
       expect(dataBody).toEqual(expectedSale);
@@ -99,8 +98,7 @@ describe('AppController (e2e)', () => {
 
   it('Update Sale [Patch /:id]', ()=>{
     const updateSale:UpdateSalesDto={
-        orderId: 'updateOrderId-2',
-        date: "2021-04-09T08:59:20.000Z",
+        orderId: 'updateOrderId-2'
     }
     return request(app.getHttpServer())
     .patch(`/sales/${saleId.id}`)

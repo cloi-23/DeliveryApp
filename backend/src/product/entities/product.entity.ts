@@ -11,6 +11,9 @@ export class Product  extends Document {
   name: string;
 
   @Prop()
+  image: string;
+
+  @Prop()
   price: number
 }
 

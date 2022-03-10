@@ -9,6 +9,10 @@ export class CreateProductDto {
   @IsString()
   establishment: string
 
+  @IsOptional()
+  @IsString()
+  image: string
+
   @IsNumber()
   @IsOptional()
   price: number
