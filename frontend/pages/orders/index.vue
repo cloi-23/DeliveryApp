@@ -11,7 +11,7 @@
     <th>Unit</th>
     <th>Status</th>
   </tr>
-  <tr v-for="order in orders">
+  <tr v-for="(order,index) in orders" :key="index">
     <td>{{ order.date }}</td>
     <td><nuxt-link :to = "{ name: 'orders-userId',params: {userId: order.userId} }">{{ order.customerName }}</nuxt-link></td>
     <td>{{ order.productName }}</td>
