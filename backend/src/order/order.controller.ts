@@ -5,7 +5,6 @@ import {
   Param, 
   Patch, 
   Post } from '@nestjs/common';
-import bodyParser from 'body-parser';
 import { CreateOrderDto } from './dto/create-delivery.dto';
 import { UpdateOrderDto } from './dto/update-delivery.dto';
 import { OrderService } from './order.service';
@@ -17,6 +16,11 @@ export class OrderController {
   @Get()
   findAll() {
     return this.orderService.findAll();
+  }
+
+  @Get('customer/:userId')
+  findAllOrderByCust(@Param('userId') id: string) {
+    return this.orderService.findAllOrderByCust(id);
   }
 
   @Get(':id')
@@ -36,8 +40,14 @@ export class OrderController {
     return this.orderService.update(id, updateOrderDto);
   }
 
+  @Delete('customer/:userId')
+  RemoveAllOrderByCust(@Param('userId') id: string) {
+    return this.orderService.RemoveAllOrderByCust(id);  
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.orderService.remove(id);  
   }
 }
+

@@ -6,15 +6,17 @@
   <table>
   <tr>
     <th>Date </th>
-    <th>User ID</th>
-    <th>Product ID</th>
+    <th>Customer Name</th>
+    <th>Product Name</th>
     <th>Unit</th>
+    <th>Status</th>
   </tr>
   <tr v-for="order in orders">
-    <th>{{ order.date }}</th>
-    <th>{{ order.userId }}</th>
-    <th>{{ order.productId }}</th>
-    <th>{{ order.quantity }}</th>
+    <td>{{ order.date }}</td>
+    <td><nuxt-link :to = "{ name: 'orders-userId',params: {userId: order.userId} }">{{ order.customerName }}</nuxt-link></td>
+    <td>{{ order.productName }}</td>
+    <td>{{ order.quantity }}</td>
+    <td>{{ order.status }}</td>
   </tr>
   </table>
   </div>
@@ -24,13 +26,11 @@
 import axios from 'axios'
 import { ref } from 'vue'
 import { orderDto } from '../../dto/orderDto';
-import { driverDto } from '../../dto/driverDto';
-import { customerDto } from '../../dto/customerDto';
 
 let orders = ref<orderDto>(null)
 const getOrders = async() => {
   try {
-    const orderRes = await axios.get('http://localhost:3000/order')
+    const orderRes = await axios.get(`http://localhost:3000/order`)
     orders.value = orderRes.data  
   } catch (error) {
     console.log(error);
@@ -38,15 +38,6 @@ const getOrders = async() => {
 }
 getOrders()
 
-const drivers = ref<driverDto[]|null>(null)
-const getDrivers = async() => {
-  try {
-    const res = await axios.get('http://localhost:3000/driver')
-    drivers.value = res.data  
-  } catch (error) {
-    console.log(error);
-  }
-}
-getDrivers()
+
 
 </script>

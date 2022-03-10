@@ -8,10 +8,13 @@ export class Order  extends Document {
   userId: string;
 
   @Prop()
-  name: string
+  customerName: string
   
   @Prop()
   productId: string;
+
+  @Prop()
+  productName: string;
 
   @Prop({ default: 'packaging'})
   status: string;
@@ -22,7 +25,7 @@ export class Order  extends Document {
   @Prop()
   quantity: number
 
-  @Prop({default : new Date().toLocaleDateString() })
+  @Prop({default : new Date() })
   date: Date
 }
 
