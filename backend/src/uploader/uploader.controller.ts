@@ -1,3 +1,4 @@
+import { UploaderService } from './uploader.service';
 import { createReadStream } from 'fs';
 import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -6,6 +7,9 @@ import { extname, join } from 'path';
 
 @Controller('upload')
 export class UploaderController {
+constructor(private readonly uploadService: UploaderService){}
+
+
     @Post('image')
   @UseInterceptors(FileInterceptor('file',{
     storage: diskStorage({
@@ -16,13 +20,13 @@ export class UploaderController {
     }),
   }))
   uploadSingle(@UploadedFile() file: Express.Multer.File) {
-    return file.filename
+    return this.uploadService.upload(file)
   }
 
 @Get(':id')
 display(@Res() res,@Param() image){
-    console.log(image.id);
-    
-    res.sendFile(join(process.cwd(), `/public/uploads/${image.id}`))
+ 
+  return this.uploadService.show(res,image)
+
 }
 }
