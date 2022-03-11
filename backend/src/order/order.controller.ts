@@ -35,9 +35,9 @@ export class OrderController {
     return this.orderService.create(productId, userId, createOrderDto);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.orderService.update(id, updateOrderDto);
+  @Patch('status/')
+  update(@Body() updateOrderDto: UpdateOrderDto) {  
+  return this.orderService.update(updateOrderDto);
   }
 
   @Delete('customer/:userId')

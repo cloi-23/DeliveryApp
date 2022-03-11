@@ -1,12 +1,12 @@
 <template>
 <div>
-  <button @click="$router.go(-1)">Back</button>
+  <button @click="routeBack">Back</button>
   <div>
   <h2>Order by customer</h2>
   <div>
-  <button @click="forDelivery">send</button> to
-  <select >
-    <option v-for="driver in drivers" value="driver.name">{{driver.name}}</option>
+  <button @click="data">send</button> to driver
+  <select v-model="selectedDriver">
+    <option v-for="driver in drivers" :value="driver.name" >{{driver.name}}</option>
   </select>
   </div>
   <table>
@@ -20,6 +20,7 @@
     <td>{{ order.quantity }}</td>
     <td>{{ order.price }}</td>
   </tr>
+  <strong>Total {{ total }}</strong>
   </table>
   </div>
 </div>
@@ -27,17 +28,46 @@
 
 <script setup>
 import axios from 'axios'
-
 const route = useRoute()
+const router = useRouter()
 
-const { data: customers } = await axios.get('http://localhost:3000/customer')
+const routeBack = () => {
+  router.go(-1)
+}
+
+const selectedDriver = ref('')
+const orderList = []
+const { data: customer } = await axios.get(`http://localhost:3000/customer/${route.params.userId}`)
 const { data: orders } = await axios.get(`http://localhost:3000/order/customer/${route.params.userId}`)
 const { data: drivers } = await axios.get('http://localhost:3000/driver')
-const total = orders.map(x=>x.price).reduce((x,y) => x+y)
-const forDelivery = () => axios.post('http://localhost:3000/delivery',{
-      userId: route.params.userId,
-      driverId:'62283bfd9202d7d7c7117d63',
-      total: total
-  })
 
+  const total = (orders.map(x=>x.price).reduce((x,y) => x+y))
+  for (let order in orders) {
+    order = {
+      orderId: orders[order]['_id'],
+      total: orders[order].price,
+      customerAddr: customer.address,
+    }
+    orderList.push(order)
+  }
+
+  const forDelivery = async() => await axios.post('http://localhost:3000/delivery', orderList)
+  const forStatus = async() => await axios.patch('http://localhost:3000/order/status', {
+   status: 'shipping'
+ }) 
+
+  const data = () => {
+  const driver = drivers.filter(x => x.name === selectedDriver.value); 
+    const other = { 
+      userId: route.params.userId,
+      driverName: driver[0].name, 
+      customerName: customer.name,
+    }
+    for (let order in orderList) {
+      Object.assign(orderList[order], other)
+    }
+  forDelivery()
+  forStatus()
+  routeBack()
+}
 </script>

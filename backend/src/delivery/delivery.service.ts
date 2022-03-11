@@ -5,8 +5,6 @@ import { Model } from 'mongoose'
 import { Order } from 'src/order/entities/order.entity';
 import { Customer } from 'src/customer/entities/customer.entity';
 import { Driver } from 'src/driver/entities/drivers.entity';
-import { CreateDeliveryDto } from './dto/create-delivery.dto';
-import { UpdateDeliveryDto } from './dto/update-delivery.dto';
 
 @Injectable()
 export class DeliveryService {
@@ -31,35 +29,12 @@ export class DeliveryService {
       throw new NotFoundException(`Delivery #${id} not found`);
     }
   }
-
-  async forDeliver() {
-    const customer = await this.customerModel.find().exec();
-    const driver = await this.driverModel.find().exec();
-    const order = await this.orderModel.find().exec();
-    const data = {
-      customer: customer,
-      driver: driver,
-      order: order
-    }
-    return data 
-  }
-  async create(createDelivery: CreateDeliveryDto) {
-    const customer = await this.customerModel.findOne({ _id: createDelivery.userId }).exec();
-    const driver = await this.driverModel.findOne({ _id: createDelivery.driverId }).exec();
-    const order = await this.orderModel.findOne({ _id: createDelivery.orderId }).exec();
-
-    const data = {
-      name: customer.name,
-      driverId: driver['_id'],
-      orderId: order['_id'],
-      customerAddr: customer.address,
-      total: order.price * order.quantity 
-    }
-    const delivery = new this.deliveryModel(data)
-    return delivery.save();
+  
+    create(createDelivery: Object[]) {
+    this.deliveryModel.insertMany(createDelivery) 
   }
 
-  async update(id: string, updateDelivery: UpdateDeliveryDto) {
+  async update(id: string, updateDelivery) {
     await this.deliveryModel
     .findOneAndUpdate({ _id: id }, { $set: updateDelivery }, { new: true })
     .exec();

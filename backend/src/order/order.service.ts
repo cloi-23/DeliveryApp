@@ -7,19 +7,33 @@ import { UpdateOrderDto } from './dto/update-delivery.dto';
 import { Product } from 'src/product/entities/product.entity';
 import { Customer } from 'src/customer/entities/customer.entity';
 import { CreateCustomerDto } from 'src/customer/dto/create-customer.dto';
+import { Delivery } from 'src/delivery/entities/delivery.entity';
 
 @Injectable()
 export class OrderService {
   constructor(
     @InjectModel(Order.name) private readonly orderModel: Model<Order> ,
     @InjectModel(Product.name) private readonly productModel: Model<Product> ,
-    @InjectModel(Customer.name) private readonly CustomerModel: Model<Customer> 
+    @InjectModel(Customer.name) private readonly customerModel: Model<Customer> ,
+    @InjectModel(Delivery.name) private readonly deliveryModel: Model<Delivery> 
     ) {}
 
-    findAll() {
-      return this.orderModel.find()
-    }
+    async findAll() {
 
+      const orderList = await this.orderModel.find()
+      const customerOrder = []
+      for (const order of orderList) {
+        const userId = order.userId
+        const customer = await this.customerModel.findOne({_id: userId})
+        const data = {
+          order,
+          customer
+        }
+         customerOrder.push(data)    
+      }
+      return customerOrder
+    }
+    
     async findAllOrderByCust(id: string) {
       const user = await this.orderModel.find({ userId: id }).exec()
       return (user.filter( x => x.status == 'packaging')) 
@@ -41,7 +55,7 @@ export class OrderService {
   
     async create(productId: string, userId: string, createOrderDto: CreateOrderDto) {
       const product = await this.productModel.findOne({ _id: productId }).exec();
-      const customer = await this.CustomerModel.findOne({ _id: userId }).exec();  
+      const customer = await this.customerModel.findOne({ _id: userId }).exec();  
       const data = {
         ...createOrderDto,
         price: product.price * createOrderDto.quantity,
@@ -52,10 +66,14 @@ export class OrderService {
       return order.save();
     }
   
-    async update(id: string, updateOrderDto: UpdateOrderDto) {
-      await this.orderModel
-      .findOneAndUpdate({ _id: id }, { $set: updateOrderDto }, { new: true })
-      .exec();
+    async update(updateOrderDto: UpdateOrderDto) {
+      const deliveries = await this.deliveryModel.find()
+      for (let deliver in deliveries) {
+        const orderId = deliveries[deliver].orderId        
+        await this.orderModel.findOneAndUpdate({ _id: orderId }, 
+        { $set: updateOrderDto }, { new: true })
+        .exec();
+      }
     }
 
      async RemoveAllOrderByCust(id: string) {

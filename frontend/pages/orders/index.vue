@@ -7,16 +7,17 @@
   <tr>
     <th>Date </th>
     <th>Customer Name</th>
+    <th>Customer Address</th>
     <th>Product Name</th>
     <th>Unit</th>
-    <th>Status</th>
   </tr>
-  <tr v-for="(order,index) in orders" :key="index">
-    <td>{{ order.date }}</td>
-    <td><nuxt-link :to = "{ name: 'orders-userId',params: {userId: order.userId} }">{{ order.customerName }}</nuxt-link></td>
-    <td>{{ order.productName }}</td>
-    <td>{{ order.quantity }}</td>
-    <td>{{ order.status }}</td>
+  <tr v-for="(list,index) in orders" :key="index" >
+    <td>{{ list.order.date }}</td>
+    <td v-if="list.order.status === 'packaging'"><nuxt-link :to = "{ name: 'orders-userId',params: {userId: list.order.userId} }">{{ list.order.customerName }}</nuxt-link></td>
+    <td v-else>{{ list.order.customerName }}</td>
+    <td>{{ list.customer.address }}</td>    
+    <td>{{ list.order.productName }}</td>
+    <td>{{ list.order.quantity }}</td>
   </tr>
   </table>
   </div>
