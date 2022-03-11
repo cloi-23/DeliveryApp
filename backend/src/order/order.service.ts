@@ -44,7 +44,7 @@ export class OrderService {
       const customer = await this.CustomerModel.findOne({ _id: userId }).exec();  
       const data = {
         ...createOrderDto,
-        price: product.price,
+        price: product.price * createOrderDto.quantity,
         customerName:customer.name,
         productName: product.name
       }

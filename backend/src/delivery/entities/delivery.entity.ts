@@ -8,14 +8,11 @@ export class Delivery  extends Document {
   
   @Prop()
   driverId: string
-  
-  @Prop()
-  orderId: string;
 
   @Prop()
   orderDate: Date;
 
-  @Prop({ default: 'to ship' })
+  @Prop({ default: 'shipping' })
   status: string
   
   @Prop()

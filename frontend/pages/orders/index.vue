@@ -24,17 +24,7 @@
 </template>
 <script setup>
 import axios from 'axios'
-import { ref } from 'vue'
 
-let orders = ref(null)
-const getOrders = async() => {
-  try {
-    const orderRes = await axios.get(`http://localhost:3000/order`)
-    orders.value = orderRes.data  
-  } catch (error) {
-    console.log(error);
-  }
-}
-console.log(orders.value);
-getOrders()
+const { data : orders } = await axios.get(`http://localhost:3000/order`)
+
 </script>
