@@ -4,19 +4,22 @@ import { Document } from "mongoose";
 @Schema()
 export class Delivery  extends Document {
   @Prop()
-  name: string
+  customerName: string
   
   @Prop()
-  driverId: string
+  driverName: string
+
+  @Prop()
+  orderId: string
+
+  @Prop()
+  customerAddr: string
 
   @Prop()
   orderDate: Date;
 
   @Prop({ default: 'shipping' })
   status: string
-  
-  @Prop()
-  customerAddr: string
 
   @Prop()
   total:number

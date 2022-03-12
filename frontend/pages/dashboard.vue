@@ -2,7 +2,7 @@
 <div>
   Dashboard
   <button @click="$router.push({ name: 'orders' })">Orders</button>
-  <button>Delivery</button>
+  <button @click="$router.push({ name: 'delivery' })">Delivery</button>
  <div>Chart</div>
 <h2>Sales Table</h2>
 

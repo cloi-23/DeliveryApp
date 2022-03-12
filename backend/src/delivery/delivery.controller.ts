@@ -6,8 +6,6 @@ import {
   Patch, 
   Post } from '@nestjs/common';
 import { DeliveryService } from './delivery.service';
-import { CreateDeliveryDto } from './dto/create-delivery.dto';
-import { UpdateDeliveryDto } from './dto/update-delivery.dto';
 
 @Controller('delivery')
 export class DeliveryController {
@@ -24,18 +22,14 @@ export class DeliveryController {
       return this.deliveryService.findOne(id)
     }
 
-    @Get('info')
-    findEachData() {
-      return this.deliveryService.forDeliver()
-    }
   
     @Post()
-    create(@Body() createDelivery: CreateDeliveryDto) {
-      return this.deliveryService.create(createDelivery);
+    create(@Body() createDelivery: Object[]) {    
+    return this.deliveryService.create(createDelivery);
     }
   
     @Patch(':id')
-    update(@Param('id') id: string, @Body() updateDelivery: UpdateDeliveryDto) {
+    update(@Param('id') id: string, @Body() updateDelivery) {
       return this.deliveryService.update(id, updateDelivery);
     }
   
