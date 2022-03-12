@@ -41,7 +41,7 @@ const router = useRouter()
   toggle: false,
   reload: false
 })
-const limitPage = ref(10)
+const limitPage = ref(5)
 const page = ref(Number(route.query.page))
 const prev =async ()=>{
 page.value--

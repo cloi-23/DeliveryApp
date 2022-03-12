@@ -29,10 +29,14 @@ try {
     username: username.value,
     password: password.value
   })
+  console.log(res)
+      router.push({name:'dashboard'})
     username.value = ''
     password.value = ''
-    if (res.status !== 201) {}
-    
+    if (res.status !== 201) {
+      response.value = 'username or password is not correct'
+    }
+
   } catch (e) {
     response.value = 'username or password is not correct'
   }
