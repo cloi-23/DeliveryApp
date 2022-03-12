@@ -1,7 +1,11 @@
 <template>
   <div >
         <h1>Product</h1>
-        <nuxt-link :to="{name:'product-add'}">Add</nuxt-link>
+        {{$route.query}}
+       <button @click="$route.meta.toggle =  !$route.meta.toggle">Add</button>
+       <div v-if="$route.meta.toggle">
+         <add-product />
+       </div>
     <table>
         <tr>
             <th>#</th>
@@ -19,13 +23,52 @@
 
         </tr>
     </table>
+    <span v-if="page > 0 ">
+    <nuxt-link @click="prev" :to="{name:'product',query:{page:page}}"> - </nuxt-link> 
+    </span>
+    {{page}}  
+    <nuxt-link @click="next" :to="{name:'product',query:{page:page}}"> + </nuxt-link>
   </div>
 </template>
 
 <script  setup>
 import axios from 'axios'
-const {data: productList} = await axios.get(`http://localhost:3000/product`)
+const route = useRoute()
+const router = useRouter()
+    definePageMeta({
+  toggle: false,
+  reload: false
+})
+const limitPage = ref(5)
+const offsetPage = ref(Number(route.query.page))
+const page = ref(1)
+const prev =async ()=>{
+page.value--
+offsetPage.value --
+await load(limitPage.value,offsetPage.value)
+}
+const next = async ()=>{
+page.value++
+offsetPage.value ++
+await load(limitPage.value,offsetPage.value)
 
+}
+console.log(`limit : ${limitPage.value} offset :${page.value  }`);
+const productList = ref(null)
+const load = async(limit=5,offset=1)=>{
+  try {
+    const res =  await axios.get(`http://localhost:3000/product?limit=${limit}&offset=${offset}`)
+    productList.value = res.data
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
+
+
+
+  await load()
 </script>
 
 <style scoped>

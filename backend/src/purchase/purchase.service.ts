@@ -1,3 +1,4 @@
+import { Product } from './../product/entities/product.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Purhcase } from './entities/purchase.entities';
@@ -7,10 +8,31 @@ import { CreatePurchaseDto } from './dto/create-purchase.dto';
 
 @Injectable()
 export class PurchaseService {
-  constructor(@InjectModel(Purhcase.name) private readonly purchaseModel: Model<Purhcase>) {} 
+  constructor(
+     @InjectModel(Purhcase.name)
+      private readonly purchaseModel: Model<Purhcase>,
+     @InjectModel(Product.name)
+      private readonly productModel: Model<Product>
+      ){}
 
-  findAll() {
-    return this.purchaseModel.find()
+
+  async findAll() {
+   
+    const purchaseList = await this.purchaseModel.find()
+    const purchaseProduct = []
+    for (const purchase of purchaseList) {
+      const productId = purchase.productId
+      const product = await this.productModel.findOne({_id: productId})
+      const data = {
+        purchase,
+         product
+      }
+      purchaseProduct.push(data)
+      
+    }
+    
+    
+    return purchaseProduct
   }
 
   async findOne(id: string) {

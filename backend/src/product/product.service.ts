@@ -1,3 +1,4 @@
+import { PaginationDto } from './dto/pagination-dto';
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common'; 
 import { InjectModel } from '@nestjs/mongoose';
 import { Product } from './entities/product.entity';
@@ -12,8 +13,12 @@ export class ProductService {
     @InjectModel(Product.name) private readonly productModel: Model<Product>,
   ) {}
 
-  findAll() {
-    return this.productModel.find()
+  findAll(pagination: PaginationDto) {
+    const { limit, offset } = pagination;
+    console.log(limit,offset*limit);
+    
+
+    return this.productModel.find().limit(limit).skip((offset - 1) * limit);
   }
 
   async findOne(id: string) {
