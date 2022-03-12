@@ -59,7 +59,7 @@
               <i class='bx bx-bar-chart-square'></i>
               <i class='bx bxs-bar-chart-square'></i>
             </div>
-             <nuxt-link :to="{name:'purchase'}">   <span class="link hide">Purchase</span> </nuxt-link>
+             <nuxt-link :to="{name:'purchase',query:{page:1}}">   <span class="link hide">Purchase</span> </nuxt-link>
           </a>
         </li>
         <div class="tooltip">

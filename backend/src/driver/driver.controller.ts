@@ -1,3 +1,4 @@
+import { PaginationDto } from './../common/pagination/pagination-dto';
 import { LoginDriveDto } from './dto/login-driver.dto';
 import { 
   Body, 
@@ -5,7 +6,8 @@ import {
   Delete, Get, 
   Param, 
   Patch, 
-  Post } from '@nestjs/common';
+  Post, 
+  Query} from '@nestjs/common';
 import { DriverService } from './driver.service';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
@@ -15,8 +17,8 @@ export class DriverController {
   constructor(private readonly driverService: DriverService) {}
 
   @Get()
-  findAll() {
-    return this.driverService.findAll();
+  findAll(@Query() pagination: PaginationDto) {
+    return this.driverService.findAll(pagination);
   }
 
   @Get(':id')

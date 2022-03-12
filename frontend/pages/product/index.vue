@@ -1,9 +1,9 @@
 <template>
   <div >
         <h1>Product</h1>
-        {{$route.query}}
+        {{$route.query}}{{$route.meta.toggle}}
        <button @click="$route.meta.toggle =  !$route.meta.toggle">Add</button>
-       <div v-if="$route.meta.toggle">
+       <div v-if="$route.meta.toggle == true">
          <add-product />
        </div>
     <table>
@@ -27,7 +27,7 @@
     <nuxt-link @click="prev" :to="{name:'product',query:{page:page}}"> - </nuxt-link> 
     </span>
     {{page}}  
-    <nuxt-link @click="next" :to="{name:'product',query:{page:page}}"> + </nuxt-link>
+    <nuxt-link @click="next" :to="{name:'product',query:{page:page+1}}"> + </nuxt-link>
   </div>
 </template>
 
@@ -40,22 +40,19 @@ const router = useRouter()
   reload: false
 })
 const limitPage = ref(5)
-const offsetPage = ref(Number(route.query.page))
-const page = ref(1)
+const page = ref(Number(route.query.page))
 const prev =async ()=>{
 page.value--
-offsetPage.value --
-await load(limitPage.value,offsetPage.value)
+await load(limitPage.value,page.value)
 }
 const next = async ()=>{
 page.value++
-offsetPage.value ++
-await load(limitPage.value,offsetPage.value)
+await load(limitPage.value,page.value)
 
 }
 console.log(`limit : ${limitPage.value} offset :${page.value  }`);
 const productList = ref(null)
-const load = async(limit=5,offset=1)=>{
+const load = async(limit=limitPage.value,offset=page.value) =>{
   try {
     const res =  await axios.get(`http://localhost:3000/product?limit=${limit}&offset=${offset}`)
     productList.value = res.data

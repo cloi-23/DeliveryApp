@@ -1,3 +1,4 @@
+import { PaginationDto } from './../common/pagination/pagination-dto';
 import { LoginDriveDto } from './dto/login-driver.dto';
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -12,8 +13,10 @@ export class DriverService {
   constructor(
     @InjectModel(Driver.name) private readonly driverModel: Model<Driver>) {}
 
-    findAll() {
-      return this.driverModel.find()
+    findAll(pagination: PaginationDto) {
+      const{ limit , offset } = pagination
+      const page = offset - 1
+      return this.driverModel.find().limit(limit).skip(page * limit)
     }
   
     async findOne(id: string) {

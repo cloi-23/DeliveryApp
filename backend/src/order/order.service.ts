@@ -1,3 +1,4 @@
+import { PaginationDto } from './../common/pagination/pagination-dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose'
@@ -18,9 +19,10 @@ export class OrderService {
     @InjectModel(Delivery.name) private readonly deliveryModel: Model<Delivery> 
     ) {}
 
-    async findAll() {
-
-      const orderList = await this.orderModel.find()
+    async findAll(pagination: PaginationDto) {
+      const { limit , offset } = pagination
+      const page = offset - 1
+      const orderList = await this.orderModel.find().limit(limit).skip(page * limit)
       const customerOrder = []
       for (const order of orderList) {
         const userId = order.userId

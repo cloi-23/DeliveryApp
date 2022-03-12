@@ -1,10 +1,12 @@
+import { PaginationDto } from './../common/pagination/pagination-dto';
 import { 
   Body, 
   Controller, 
   Delete, Get, 
   Param, 
   Patch, 
-  Post } from '@nestjs/common';
+  Post, 
+  Query} from '@nestjs/common';
 import { CreatePurchaseDto } from './dto/create-purchase.dto';
 import { UpdatePurchaseDto } from './dto/update-purchase.dto';
 import { PurchaseService } from './purchase.service';
@@ -14,8 +16,8 @@ export class PurchaseController {
   constructor(private readonly purchaseService: PurchaseService) {}
 
   @Get()
-  findAll() {
-    return this.purchaseService.findAll();
+  findAll(@Query() pagination: PaginationDto) {
+    return this.purchaseService.findAll(pagination);
   }
 
   @Get(':id')
