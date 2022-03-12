@@ -23,11 +23,13 @@
 
         </tr>
     </table>
-    <span v-if="page > 0 ">
-    <nuxt-link @click="prev" :to="{name:'product',query:{page:page}}"> - </nuxt-link> 
-    </span>
-    {{page}}  
-    <nuxt-link @click="next" :to="{name:'product',query:{page:page+1}}"> + </nuxt-link>
+    <div  v-if="productList.length !=0">
+      <span v-if="page != 1 ">
+      <nuxt-link @click="prev" :to="{name:'product',query:{page: page}}"> - </nuxt-link> 
+      </span>
+      {{page}}  
+       <nuxt-link @click="next" :to="{name:'product',query:{page: page + 1}}"> + </nuxt-link>
+  </div>
   </div>
 </template>
 
@@ -39,7 +41,7 @@ const router = useRouter()
   toggle: false,
   reload: false
 })
-const limitPage = ref(5)
+const limitPage = ref(10)
 const page = ref(Number(route.query.page))
 const prev =async ()=>{
 page.value--
@@ -50,7 +52,7 @@ page.value++
 await load(limitPage.value,page.value)
 
 }
-console.log(`limit : ${limitPage.value} offset :${page.value  }`);
+
 const productList = ref(null)
 const load = async(limit=limitPage.value,offset=page.value) =>{
   try {
@@ -61,8 +63,6 @@ const load = async(limit=limitPage.value,offset=page.value) =>{
   }
 
 }
-
-
 
 
   await load()

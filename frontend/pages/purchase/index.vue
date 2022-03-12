@@ -18,7 +18,6 @@
     </tr>
   </thead>
   <tbody>
-      <!-- {{purchase}} {{product}} -->
     <tr v-for="(list,index) in purchaseList" :key="index">
       <th scope="row">{{index+1}}</th>
       <td>{{list.product.name}}</td>
@@ -29,6 +28,13 @@
 
   </tbody>
 </table>
+  <div  v-if="purchaseList.length != 0">
+    <span v-if="page != 1 ">
+    <nuxt-link @click="prev" :to="{name:'purchase',query:{page: page}}"> - </nuxt-link> 
+    </span>
+    {{page}}  
+    <nuxt-link @click="next" :to="{name:'purchase',query:{page: page + 1}}"> + </nuxt-link>
+  </div>
 </div>
 
 </template>
@@ -40,13 +46,38 @@ const product = ref(null)
   toggle: false,
   reload: false
 })
-const {data: purchaseList} = await axios.get(`http://localhost:3000/purchase`)
 
 const getTotal = (list)=>{
     const unitPrice = list.purchase.cost
     const quantity = list.purchase.quantity
     return unitPrice * quantity
 }
+const limitPage = ref(10)
+const route  = useRoute()
+const page = ref(Number(route.query.page))
+const prev =async ()=>{
+page.value--
+await load(limitPage.value,page.value)
+}
+const next = async ()=>{
+page.value++
+await load(limitPage.value,page.value)
+
+}
+
+const purchaseList = ref(null)
+const load = async(limit=limitPage.value,offset=page.value) =>{
+  try {
+    const res =  await axios.get(`http://localhost:3000/purchase?limit=${limit}&offset=${offset}`)
+    purchaseList.value = res.data
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
+
+  await load()
 
 </script>
 
