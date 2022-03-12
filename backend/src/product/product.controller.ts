@@ -1,4 +1,4 @@
-import { PaginationDto } from './dto/pagination-dto';
+import { PaginationDto } from '../common/pagination/pagination-dto';
 import {
   Body,
   Controller,
@@ -19,7 +19,7 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get()
-  findAll(@Query() pagination:PaginationDto) {   
+  findAll(@Query() pagination: PaginationDto) {   
     return this.productService.findAll(pagination);
   }
 

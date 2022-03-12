@@ -1,4 +1,4 @@
-import { PaginationDto } from './dto/pagination-dto';
+import { PaginationDto } from '../common/pagination/pagination-dto';
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common'; 
 import { InjectModel } from '@nestjs/mongoose';
 import { Product } from './entities/product.entity';
@@ -15,10 +15,8 @@ export class ProductService {
 
   findAll(pagination: PaginationDto) {
     const { limit, offset } = pagination;
-    console.log(limit,offset*limit);
-    
-
-    return this.productModel.find().limit(limit).skip((offset - 1) * limit);
+    const page = offset -1
+    return this.productModel.find().limit(limit).skip(page * limit);
   }
 
   async findOne(id: string) {

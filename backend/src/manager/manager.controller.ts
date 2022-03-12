@@ -1,3 +1,4 @@
+import { PaginationDto } from './../common/pagination/pagination-dto';
 import { LoginManagerDto } from './dto/login-manager.dto';
 import { 
   Body, 
@@ -5,7 +6,8 @@ import {
   Delete, Get, 
   Param, 
   Patch, 
-  Post } from '@nestjs/common';
+  Post, 
+  Query} from '@nestjs/common';
 import { CreateManagerDto } from './dto/create-manager.dto';
 import { UpdateManagerDto } from './dto/update-manager.dto';
 import { ManagerService } from './manager.service';
@@ -15,8 +17,8 @@ export class ManagerController {
   constructor(private readonly managerService: ManagerService) {}
 
   @Get()
-  findAll() {
-    return this.managerService.findAll();
+  findAll(@Query() pagination: PaginationDto) {
+    return this.managerService.findAll(pagination);
   }
 
   @Get(':id')

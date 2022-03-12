@@ -1,9 +1,9 @@
 <template>
   <div >
         <h1>Product</h1>
-        {{$route.query}}
+        {{$route.query}}{{$route.meta.toggle}}
        <button @click="$route.meta.toggle =  !$route.meta.toggle">Add</button>
-       <div v-if="$route.meta.toggle">
+       <div v-if="$route.meta.toggle == true">
          <add-product />
        </div>
     <table>
@@ -23,11 +23,15 @@
 
         </tr>
     </table>
-    <span v-if="page > 0 ">
-    <nuxt-link @click="prev" :to="{name:'product',query:{page:page}}"> - </nuxt-link> 
-    </span>
-    {{page}}  
-    <nuxt-link @click="next" :to="{name:'product',query:{page:page}}"> + </nuxt-link>
+   
+      <span v-if="page != 1 ">
+      <nuxt-link @click="prev" :to="{name:'product',query:{page: page}}"> - </nuxt-link> 
+      </span>
+        {{page}} 
+        <span  v-if="productList.length !=0 ">
+       <nuxt-link @click="next" :to="{name:'product',query:{page: page + 1}}"> + </nuxt-link>
+      </span>
+
   </div>
 </template>
 
@@ -39,22 +43,31 @@ const router = useRouter()
   toggle: false,
   reload: false
 })
+<<<<<<< HEAD
 const limitPage = ref(10)
 const offsetPage = ref(Number(route.query.page))
 const page = ref(1)
+=======
+const limitPage = ref(5)
+const page = ref(Number(route.query.page))
+>>>>>>> 8f1c2705b7a17cb8f63c4fee6acb99afb4b1d1ec
 const prev =async ()=>{
 page.value--
-offsetPage.value --
-await load(limitPage.value,offsetPage.value)
+await load(limitPage.value,page.value)
 }
 const next = async ()=>{
 page.value++
-offsetPage.value ++
-await load(limitPage.value,offsetPage.value)
+await load(limitPage.value,page.value)
 
 }
+<<<<<<< HEAD
 const productList = ref(null)
 const load = async(limit=limitPage.value,offset=page.value )=>{
+=======
+
+const productList = ref(null)
+const load = async(limit=limitPage.value,offset=page.value) =>{
+>>>>>>> 8f1c2705b7a17cb8f63c4fee6acb99afb4b1d1ec
   try {
     const res =  await axios.get(`http://localhost:3000/product?limit=${limit}&offset=${offset}`)
     productList.value = res.data
@@ -63,6 +76,11 @@ const load = async(limit=limitPage.value,offset=page.value )=>{
   }
 
 }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 8f1c2705b7a17cb8f63c4fee6acb99afb4b1d1ec
   await load()
 </script>
 

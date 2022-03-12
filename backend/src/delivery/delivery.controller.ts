@@ -1,10 +1,12 @@
+import { PaginationDto } from './../common/pagination/pagination-dto';
 import { 
   Body, 
   Controller, 
   Delete, Get, 
   Param, 
   Patch, 
-  Post } from '@nestjs/common';
+  Post, 
+  Query} from '@nestjs/common';
 import { DeliveryService } from './delivery.service';
 
 @Controller('delivery')
@@ -13,8 +15,8 @@ export class DeliveryController {
     private readonly deliveryService: DeliveryService) {} 
     
     @Get()
-    findAll() {
-      return this.deliveryService.findAll();
+    findAll(@Query() pagination: PaginationDto) {
+      return this.deliveryService.findAll(pagination);
     }
   
     @Get(':id')

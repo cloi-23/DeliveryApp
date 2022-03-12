@@ -1,3 +1,4 @@
+import { PaginationDto } from './../common/pagination/pagination-dto';
 import { LoginCustomerDto } from './dto/login-cutomer.dto';
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -12,8 +13,10 @@ export class CustomerService {
   constructor(
     @InjectModel(Customer.name) private customerModel: Model<Customer>) {}
 
-    findAll() {
-      return this.customerModel.find()
+    findAll(pagination: PaginationDto) {
+      const {limit ,offset} = pagination
+      const page = offset - 1
+      return this.customerModel.find().limit(limit).skip(page * limit)
     }
   
     async findOne(id: string) {

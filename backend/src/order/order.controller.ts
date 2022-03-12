@@ -1,10 +1,12 @@
+import { PaginationDto } from './../common/pagination/pagination-dto';
 import { 
   Body, 
   Controller, 
   Delete, Get, 
   Param, 
   Patch, 
-  Post } from '@nestjs/common';
+  Post, 
+  Query} from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-delivery.dto';
 import { UpdateOrderDto } from './dto/update-delivery.dto';
 import { OrderService } from './order.service';
@@ -14,8 +16,8 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Get()
-  findAll() {
-    return this.orderService.findAll();
+  findAll(@Query() pagination: PaginationDto) {
+    return this.orderService.findAll(pagination);
   }
 
   @Get('customer/:userId')

@@ -1,3 +1,4 @@
+import { PaginationDto } from './../common/pagination/pagination-dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Delivery } from './entities/delivery.entity';
@@ -13,8 +14,10 @@ export class DeliveryService {
   @InjectModel(Customer.name) private readonly customerModel: Model <Customer> ,
   @InjectModel(Driver.name) private readonly driverModel: Model <Driver>) {}
 
-  findAll() {
-    return this.deliveryModel.find()
+  findAll(pagination: PaginationDto) {
+    const { limit , offset } = pagination
+    const page = offset - 1 
+    return this.deliveryModel.find().limit(limit).skip(page * limit)
   }
 
   async findOne(id: string) {

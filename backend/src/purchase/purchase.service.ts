@@ -1,3 +1,4 @@
+import { PaginationDto } from './../common/pagination/pagination-dto';
 import { Product } from './../product/entities/product.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -16,9 +17,10 @@ export class PurchaseService {
       ){}
 
 
-  async findAll() {
-   
-    const purchaseList = await this.purchaseModel.find()
+  async findAll(pagination: PaginationDto) {
+    const { limit , offset } = pagination
+    const page = offset - 1
+    const purchaseList = await this.purchaseModel.find().limit(limit).skip(page * limit)
     const purchaseProduct = []
     for (const purchase of purchaseList) {
       const productId = purchase.productId

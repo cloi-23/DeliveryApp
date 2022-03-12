@@ -21,11 +21,44 @@
   </tr>
   </table>
   </div>
+      <div  v-if="orders.length != 0">
+    <span v-if="page != 1 ">
+    <nuxt-link @click="prev" :to="{name:'orders',query:{page: page}}"> - </nuxt-link> 
+    </span>
+        {{page}} 
+       <span  v-if="orders.length !=0 ">
+       <nuxt-link @click="next" :to="{name:'orders',query:{page: page + 1}}"> + </nuxt-link>
+  </span>
+  </div>
 </div>
 </template>
 <script setup>
 import axios from 'axios'
 
-const { data : orders } = await axios.get(`http://localhost:3000/order`)
+const limitPage = ref(10)
+const route  = useRoute()
+const page = ref(Number(route.query.page))
+const prev =async ()=>{
+page.value--
+await load(limitPage.value,page.value)
+}
+const next = async ()=>{
+page.value++
+await load(limitPage.value,page.value)
 
+}
+
+const orders = ref(null)
+const load = async(limit=limitPage.value,offset=page.value) =>{
+  try {
+    const res =  await axios.get(`http://localhost:3000/order?limit=${limit}&offset=${offset}`)
+    orders.value = res.data
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
+
+  await load()
 </script>
