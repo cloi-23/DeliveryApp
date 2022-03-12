@@ -20,7 +20,7 @@
     <td>{{ order.quantity }}</td>
     <td>{{ order.price }}</td>
   </tr>
-  <strong>Total {{ total }}</strong>
+  <strong v-if="total">Total {{ total }}</strong>
   </table>
   </div>
 </div>
@@ -31,8 +31,12 @@ import axios from 'axios'
 const route = useRoute()
 const router = useRouter()
 
+onBeforeUnmount(() => {
+location.reload()
+})
+
 const routeBack = () => {
-  router.go(-1)
+  router.push('/orders')
 }
 
 const selectedDriver = ref('')
@@ -41,7 +45,7 @@ const { data: customer } = await axios.get(`http://localhost:3000/customer/${rou
 const { data: orders } = await axios.get(`http://localhost:3000/order/customer/${route.params.userId}`)
 const { data: drivers } = await axios.get('http://localhost:3000/driver')
 
-  const total = (orders.map(x=>x.price).reduce((x,y) => x+y))
+  const total = (orders.map(x=>x.price).reduce((x,y) => x+y, 0))
   for (let order in orders) {
     order = {
       orderId: orders[order]['_id'],
@@ -50,7 +54,7 @@ const { data: drivers } = await axios.get('http://localhost:3000/driver')
     }
     orderList.push(order)
   }
-
+console.log(orders);
   const forDelivery = async() => await axios.post('http://localhost:3000/delivery', orderList)
   const forStatus = async() => await axios.patch('http://localhost:3000/order/status', {
    status: 'shipping'
@@ -60,7 +64,8 @@ const { data: drivers } = await axios.get('http://localhost:3000/driver')
   const driver = drivers.filter(x => x.name === selectedDriver.value); 
     const other = { 
       userId: route.params.userId,
-      driverName: driver[0].name, 
+      driverName: driver[0].name,
+      driverContact: driver[0].contact,
       customerName: customer.name,
     }
     for (let order in orderList) {

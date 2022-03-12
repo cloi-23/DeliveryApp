@@ -39,7 +39,7 @@ const router = useRouter()
   toggle: false,
   reload: false
 })
-const limitPage = ref(5)
+const limitPage = ref(10)
 const offsetPage = ref(Number(route.query.page))
 const page = ref(1)
 const prev =async ()=>{
@@ -53,9 +53,8 @@ offsetPage.value ++
 await load(limitPage.value,offsetPage.value)
 
 }
-console.log(`limit : ${limitPage.value} offset :${page.value  }`);
 const productList = ref(null)
-const load = async(limit=5,offset=1)=>{
+const load = async(limit=limitPage.value,offset=page.value )=>{
   try {
     const res =  await axios.get(`http://localhost:3000/product?limit=${limit}&offset=${offset}`)
     productList.value = res.data
@@ -64,10 +63,6 @@ const load = async(limit=5,offset=1)=>{
   }
 
 }
-
-
-
-
   await load()
 </script>
 

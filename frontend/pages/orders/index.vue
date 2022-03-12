@@ -13,7 +13,7 @@
   </tr>
   <tr v-for="(list,index) in orders" :key="index" >
     <td>{{ list.order.date }}</td>
-    <td v-if="list.order.status === 'packaging'"><nuxt-link :to = "{ name: 'orders-userId',params: {userId: list.order.userId} }">{{ list.order.customerName }}</nuxt-link></td>
+    <td v-if="list.order.status === 'To ship'"><nuxt-link :to = "{ name: 'orders-userId',params: {userId: list.order.userId} }">{{ list.order.customerName }}</nuxt-link></td>
     <td v-else>{{ list.order.customerName }}</td>
     <td>{{ list.customer.address }}</td>    
     <td>{{ list.order.productName }}</td>

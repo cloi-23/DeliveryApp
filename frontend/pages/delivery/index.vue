@@ -6,15 +6,15 @@
   <table>
   <tr>
     <th>Driver Name </th>
-    <th>Customer Name</th>
+    <th>Contact # </th>
+    <th>Order</th>
     <th>Item in total</th>
-    <th>Status</th>
   </tr>
   <tr v-for="(delivery,index) in deliveries" :key="index" >
     <td>{{ delivery.driverName }}</td>
-    <td>{{ delivery.customerName }}</td>    
+    <td>{{ delivery.driverContact }}</td>
+    <td> <nuxt-link :to = "{ name: 'delivery-id',params: {id: delivery['_id']} }">Details</nuxt-link></td>    
     <td>{{ delivery.total }}</td>
-    <td>{{delivery.status}}</td>
   </tr>
   </table>
   </div>

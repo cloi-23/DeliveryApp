@@ -6,17 +6,11 @@ export class Order  extends Document {
   
   @Prop()
   userId: string;
-
-  @Prop()
-  customerName: string
   
   @Prop()
   productId: string;
 
-  @Prop()
-  productName: string;
-
-  @Prop({ default: 'packaging'})
+  @Prop({ default: 'To ship'})
   status: string;
 
   @Prop()

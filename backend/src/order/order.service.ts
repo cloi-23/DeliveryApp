@@ -53,17 +53,18 @@ export class OrderService {
      
     }
   
-    async create(productId: string, userId: string, createOrderDto: CreateOrderDto) {
+    async create(productId: string, userId: string, createOrderDto) {
       const product = await this.productModel.findOne({ _id: productId }).exec();
       const customer = await this.customerModel.findOne({ _id: userId }).exec();  
-      const data = {
-        ...createOrderDto,
-        price: product.price * createOrderDto.quantity,
-        customerName:customer.name,
-        productName: product.name
-      }
-      const order = new this.orderModel(data);
-      return order.save();
+      // const data = {
+      //   ...createOrderDto,
+      //   price: product.price * createOrderDto.quantity,
+      //   customerName:customer.name,
+      //   productName: product.name
+      // }
+      await this.orderModel.insertMany(createOrderDto)
+      // const order = new this.orderModel(data);
+      // return order.save();
     }
   
     async update(updateOrderDto: UpdateOrderDto) {

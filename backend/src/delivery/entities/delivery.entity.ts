@@ -3,20 +3,12 @@ import { Document } from "mongoose";
 /* eslint-disable prettier/prettier */
 @Schema()
 export class Delivery  extends Document {
+
   @Prop()
-  customerName: string
-  
-  @Prop()
-  driverName: string
+  driverId: string
 
   @Prop()
   orderId: string
-
-  @Prop()
-  customerAddr: string
-
-  @Prop()
-  orderDate: Date;
 
   @Prop({ default: 'shipping' })
   status: string
