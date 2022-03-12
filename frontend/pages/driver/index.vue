@@ -1,37 +1,39 @@
 <template>
   <div >
-        <h1>Product</h1>
+        <h1>Driver</h1>
         {{$route.query}}{{$route.meta.toggle}}
        <button @click="$route.meta.toggle =  !$route.meta.toggle">Add</button>
        <div v-if="$route.meta.toggle == true">
-         <add-product />
+         <add-driver />
        </div>
     <table>
         <tr>
             <th>#</th>
-             <th>Image</th>
             <th>Name</th>
-            <th>Establishment</th>
-            <th>Unit Price</th>
+            <th>Username</th>
+            <th>Address</th>
+            <th>Contact</th>
+            <th>Device</th>
         </tr>
-        <tr v-for="(product,index) in productList" :key="index">
+        <tr v-for="(driver,index) in driverList" :key="index">
             <td>{{index+1}}</td>
-              <td><img :src='product.image' :alt="product.name" width="150" height="100"> </td>
-            <td>{{product.name}}</td>
-             <td>{{product.establishment}}</td>
-              <td>{{product.price}}</td>
+             <td>{{driver.name}}</td>
+             <td>{{driver.username}}</td>
+             <td>{{driver.address}}</td>
+            <td>{{driver.contact}}</td>
+             <td>{{driver.device}}</td>
 
         </tr>
     </table>
-   
+    
       <span v-if="page != 1 ">
-      <nuxt-link @click="prev" :to="{name:'product',query:{page: page}}"> - </nuxt-link> 
-      </span>
-        {{page}} 
-        <span  v-if="productList.length !=0 ">
-       <nuxt-link @click="next" :to="{name:'product',query:{page: page + 1}}"> + </nuxt-link>
-      </span>
+      <nuxt-link @click="prev" :to="{name:'driver',query:{page: page}}"> - </nuxt-link> 
 
+      </span>
+      {{page}} 
+      <span  v-if="driverList.length !=0  ">
+       <nuxt-link @click="next" :to="{name:'driver',query:{page: page + 1}}"> + </nuxt-link>
+  </span>
   </div>
 </template>
 
@@ -55,11 +57,11 @@ await load(limitPage.value,page.value)
 
 }
 
-const productList = ref(null)
+const driverList = ref(null)
 const load = async(limit=limitPage.value,offset=page.value) =>{
   try {
-    const res =  await axios.get(`http://localhost:3000/product?limit=${limit}&offset=${offset}`)
-    productList.value = res.data
+    const res =  await axios.get(`http://localhost:3000/driver?limit=${limit}&offset=${offset}`)
+    driverList.value = res.data
   } catch (error) {
     console.log(error);
   }

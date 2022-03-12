@@ -11,6 +11,9 @@ export class Driver  extends Document {
   contact: string;
 
   @Prop()
+  address: string;
+
+  @Prop()
   username: string;
 
   @Prop()

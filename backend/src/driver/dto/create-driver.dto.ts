@@ -9,6 +9,9 @@ export class CreateDriverDto {
   contact: string;
 
   @IsString()
+  address: string;
+
+  @IsString()
   username: string;
 
   @IsString()

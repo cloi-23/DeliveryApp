@@ -62,6 +62,15 @@
              <nuxt-link :to="{name:'purchase',query:{page:1}}">   <span class="link hide">Purchase</span> </nuxt-link>
           </a>
         </li>
+        <li class="tooltip-element" data-tooltip="3">
+          <a href="#" data-active="3">
+            <div class="icon">
+              <i class='bx bx-bar-chart-square'></i>
+              <i class='bx bxs-bar-chart-square'></i>
+            </div>
+             <nuxt-link :to="{name:'driver',query:{page:1}}">   <span class="link hide">Driver</span> </nuxt-link>
+          </a>
+        </li>
         <div class="tooltip">
           <span class="show">Dashboard</span>
           <span>Projects</span>

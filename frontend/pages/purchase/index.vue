@@ -28,13 +28,14 @@
 
   </tbody>
 </table>
-  <div  v-if="purchaseList.length != 0">
     <span v-if="page != 1 ">
     <nuxt-link @click="prev" :to="{name:'purchase',query:{page: page}}"> - </nuxt-link> 
     </span>
-    {{page}}  
-    <nuxt-link @click="next" :to="{name:'purchase',query:{page: page + 1}}"> + </nuxt-link>
-  </div>
+      {{page}} 
+      <span  v-if="purchaseList.length !=0 ">
+       <nuxt-link @click="next" :to="{name:'purchase',query:{page: page + 1}}"> + </nuxt-link>
+  </span>
+  
 </div>
 
 </template>

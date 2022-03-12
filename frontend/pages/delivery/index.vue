@@ -18,13 +18,14 @@
   </tr>
   </table>
   </div>
-    <div  v-if="deliveries.length != 0">
+   
     <span v-if="page != 1 ">
     <nuxt-link @click="prev" :to="{name:'delivery',query:{page: page}}"> - </nuxt-link> 
     </span>
-    {{page}}  
+    <span v-show = "page == 1 && deliveries.length !=0 ">
+      {{page}} 
+    </span>
     <nuxt-link @click="next" :to="{name:'delivery',query:{page: page + 1}}"> + </nuxt-link>
-  </div>
 </div>
 </template>
 <script setup>

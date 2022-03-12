@@ -25,8 +25,10 @@
     <span v-if="page != 1 ">
     <nuxt-link @click="prev" :to="{name:'orders',query:{page: page}}"> - </nuxt-link> 
     </span>
-    {{page}}  
-    <nuxt-link @click="next" :to="{name:'orders',query:{page: page + 1}}"> + </nuxt-link>
+        {{page}} 
+       <span  v-if="orders.length !=0 ">
+       <nuxt-link @click="next" :to="{name:'orders',query:{page: page + 1}}"> + </nuxt-link>
+  </span>
   </div>
 </div>
 </template>

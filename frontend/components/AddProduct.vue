@@ -18,7 +18,7 @@
   <input type="text" class="form-control"   v-model="establishment" placeholder="Enter Establishment" required>
 </div>
 <div class="mb-3">
- <label for="exampleFormControlInput1" class="form-label">Unit Price: </label>
+ <label for="exampleFormControlInput1" class="form-label">Selling Price: </label>
   <input type="number" class="form-control"   v-model="price" placeholder="Enter Amount" required>
 </div>
   <div class="col-12">
